@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitch仿切</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 微軟正黑體;
+        }
+
+        header {
+            position: relative;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 50px;
+            background-color: rgb(255, 255, 255);
+            z-index: 5;
+            padding: 0 10px;
+            border-bottom: 2px solid #3f3f3e36;
+        }
+
+        header,
+        .header-left,
+        .header-left ul,
+        .search-bar,
+        .member,
+        .member ul {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            width: 200px;
+        }
+
+        .header-left .menu {
+            width: 140px;
+        }
+
+        header ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        header ul a {
+            text-decoration: none;
+            color: #3F3F3E;
+            font-size: 18px;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 44px;
+        }
+
+        .search-bar {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            height: 40px;
+            background-color: rgb(255, 255, 255);
+            border-radius: 10px;
+        }
+
+        .search-bar input {
+            height: 40px;
+            width: 360px;
+            border: none;
+            background-color: #D7D7D8;
+            border-radius: 10px 0 0 10px;
+            font-size: 14px;
+            padding-left: 10px;
+        }
+
+        .search-bar img {
+            height: 40px;
+            width: 38px;
+            transform: translateY(2px);
+            border-radius: 0 10px 10px 0;
+        }
+
+        .member {
+            width: 200px;
+        }
+
+        .member ul {
+            width: 100px;
+        }
+
+        .member img {
+            width: 25px;
+            height: 25px;
+        }
+
+        aside {
+            background-color: #EFEEEF;
+            width: 50px;
+            height: calc(100vh - 50px);
+            position: fixed;
+            top: 50px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-content: flex-start;
+        }
+
+        aside div {
+            margin: 5px 0;
+        }
+
+        aside img {
+            width: 30px;
+        }
+
+        .people {
+            margin: 0;
+        }
+
+        .person {
+            height: 30px;
+            width: 30px;
+            border-radius: 15px;
+            background-color: rgb(240, 164, 164);
+            margin: 10px 0;
+        }
+
+        main {
+            height: 100%;
+            width: calc(100% - 50px);
+            background-color: #F6F6F7;
+            margin: 50px 0 0 50px;
+        }
+
+        .container {
+            padding: 24px 27px;
+        }
+
+        .e-sport {
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 57px;
+            margin: 10px 0 5px;
+        }
+
+        .e-sport-description {
+            margin: 0;
+            font-size: 24px;
+            color: rgb(78, 78, 78);
+            font-weight: bold;
+
+        }
+
+        .col {
+            min-width: 293px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 6px;
+            margin-top: 40px;
+        }
+
+        .game-card {
+            padding: 8px;
+            gap: 8px;
+            background-color: rgb(235, 232, 232);
+            display: flex;
+            align-items: center;
+            border: 3px solid #cfcfcf;
+            border-radius: 5px;
+        }
+
+        .game-img {
+            width: 40px;
+            height: 50px;
+            background-color: rgb(255, 127, 127);
+        }
+
+        .game-info {
+            width: 182px;
+            font-size: 13px;
+            font-weight: bolder;
+
+        }
+
+        .live-block {
+            height: 50px;
+        }
+
+        .live {
+            display: inline;
+            color: white;
+            font-size: 13px;
+            background-color: red;
+            padding: 3px;
+            border-radius: 5px;
+        }
+
+        .stream {
+            height: 40vh;
+        }
+        h2{
+            font-size: 40px;
+            margin: 0;
+        }
+        .streaming-description{
+            color: rgb(78, 78, 78);
+            font-size: 20px;
+            margin: 0;
+            letter-spacing: 1px;
+
+        }
+
+        .stream-block {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .top-stream {
+            width: 34%;
+        }
+
+        .top-stream-card>.thumbnail {
+            height: 280px;
+        }
+
+        .top-stream-card>.stream-info>.stream-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .top-stream-card .stream-game {
+            font-size: 13px;
+        }
+
+        .stream-row {
+            width: 65%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            row-gap: 10px;
+        }
+
+        .stream-col {
+            width: calc(25% - 10px);
+        }
+
+        .stream-col .thumbnail {
+            min-height: 150px;
+        }
+
+        .stream-card {
+            font-size: 12px;
+        }
+
+        .thumbnail {
+            width: 100%;
+            background-color: rgb(71, 23, 161);
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .audience {
+            background-color: rgba(20, 21, 27, 0.767);
+            color: rgb(255, 255, 255);
+            font-size: 10px;
+            padding: 2px;
+            border-radius: 2px;
+        }
+
+        .stream-name {
+            color: #641cb6;
+            font-weight: bolder;
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .stream-name-pic {
+            width: 20px;
+            height: 20px;
+            background-color: aqua;
+            border-radius: 10px;
+            margin-right: 5px;
+        }
+
+        .stream-info .stream-title {
+            font-weight: bold;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            margin-bottom: 5px;
+        }
+
+        .stream-game {
+            color: rgb(83, 85, 85);
+            letter-spacing: 0.5px;
+        }
+
+        @media screen and (max-width:1200px) {
+            .top-stream {
+                width: 44%;
+            }
+
+            .stream-row {
+                width: 55%;
+            }
+
+            .stream-col {
+                width: calc(50% - 10px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-left">
+            <div class="logo"><img src="./IMG/icon.png" alt="icon"></div>
+            <nav>
+                <ul class="menu">
+                    <li class="men-btn">
+                        <a href="">瀏覽</a>
+                    </li>
+                    <li class="men-btn">
+                        <a href="">電競</a>
+                    </li>
+                    <li class="men-btn">
+                        <a href="">音樂</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="search-bar">
+            <input type="text" class="search" name="search" value="搜尋">
+            <div class="search-btn"><img src="./IMG/search.PNG" alt="search"></div>
+        </div>
+        <div class="member">
+            <div class="prime-btn"><img src="./IMG/message.PNG" alt="message"></div>
+            <ul class="sign">
+                <li class="sign-in">
+                    <a href="">登入</a>
+                </li>
+                <li class="sign-out">
+                    <a href="">註冊</a>
+                </li>
+            </ul>
+            <div class="core-btn"><img src="./IMG/user.PNG" alt="user"></div>
+        </div>
+    </header>
+
+    <aside>
+        <div class="unfold"><img src="./IMG/fold.PNG" alt="unfold"></div>
+        <div class="recommend"><img src="./IMG/live.PNG" alt="recommend"></div>
+        <div class="people">
+            <div class="person"></div>
+            <div class="person"></div>
+            <div class="person"></div>
+            <div class="person"></div>
+            <div class="person"></div>
+            <div class="person"></div>
+        </div>
+    </aside>
+
+    <main>
+        <div class="container">
+            <div class="e-sport">
+                <h1>電競</h1>
+                <p class="e-sport-description">
+                    即時賽況、賽事精華和您最愛的職業玩家都在這裡
+                </p>
+                <div class="row">
+                    <div class="col">
+                        <div class="game-card">
+                            <div class="game-img"></div>
+                            <div class="game-info">
+                                <p class="game-name">LOL</p>
+                                <p class="sub-info">觀眾人數:1,123</p>
+                            </div>
+                            <div class="live-block">
+                                <div class="live">LIVE</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="game-card">
+                            <div class="game-img"></div>
+                            <div class="game-info">
+                                <p class="game-name">LOL</p>
+                                <p class="sub-info">觀眾人數:1,123</p>
+                            </div>
+                            <div class="live-block">
+                                <div class="live">LIVE</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="game-card">
+                            <div class="game-img"></div>
+                            <div class="game-info">
+                                <p class="game-name">LOL</p>
+                                <p class="sub-info">觀眾人數:1,123</p>
+                            </div>
+                            <div class="live-block">
+                                <div class="live">LIVE</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="game-card">
+                            <div class="game-img"></div>
+                            <div class="game-info">
+                                <p class="game-name">LOL</p>
+                                <p class="sub-info">觀眾人數:1,123</p>
+                            </div>
+                            <div class="live-block">
+                                <div class="live">LIVE</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="game-card">
+                            <div class="game-img"></div>
+                            <div class="game-info">
+                                <p class="game-name">LOL</p>
+                                <p class="sub-info">觀眾人數:1,123</p>
+                            </div>
+                            <div class="live-block">
+                                <div class="live">LIVE</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="game-card">
+                            <div class="game-img"></div>
+                            <div class="game-info">
+                                <p class="game-name">LOL</p>
+                                <p class="sub-info">觀眾人數:1,123</p>
+                            </div>
+                            <div class="live-block">
+                                <div class="live">LIVE</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="game-card">
+                            <div class="game-img"></div>
+                            <div class="game-info">
+                                <p class="game-name">LOL</p>
+                                <p class="sub-info">觀眾人數:1,123</p>
+                            </div>
+                            <div class="live-block">
+                                <div class="live">LIVE</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="game-card">
+                            <div class="game-img"></div>
+                            <div class="game-info">
+                                <p class="game-name">LOL</p>
+                                <p class="sub-info">觀眾人數:1,123</p>
+                            </div>
+                            <div class="live-block">
+                                <div class="live">LIVE</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="game-card">
+                            <div class="game-img"></div>
+                            <div class="game-info">
+                                <p class="game-name">LOL</p>
+                                <p class="sub-info">觀眾人數:1,123</p>
+                            </div>
+                            <div class="live-block">
+                                <div class="live">LIVE</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="game-card">
+                            <div class="game-img"></div>
+                            <div class="game-info">
+                                <p class="game-name">LOL</p>
+                                <p class="sub-info">觀眾人數:1,123</p>
+                            </div>
+                            <div class="live-block">
+                                <div class="live">LIVE</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="game-card">
+                            <div class="game-img"></div>
+                            <div class="game-info">
+                                <p class="game-name">LOL</p>
+                                <p class="sub-info">觀眾人數:1,123</p>
+                            </div>
+                            <div class="live-block">
+                                <div class="live">LIVE</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="game-card">
+                            <div class="game-img"></div>
+                            <div class="game-info">
+                                <p class="game-name">LOL</p>
+                                <p class="sub-info">觀眾人數:1,123</p>
+                            </div>
+                            <div class="live-block">
+                                <div class="live">LIVE</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col"></div>
+                    <div class="col"></div>
+                    <div class="col"></div>
+                    <div class="col"></div>
+
+                </div>
+            </div>
+            <div class="streaming">
+                <h2>實況中的對戰</h2>
+                <p class="streaming-description">
+                    我們認為你會喜歡的最精彩Live比賽和對戰
+                </p>
+                <div class="stream-block">
+                    <div class="top-stream">
+                        <div class="top-stream-card">
+
+                            <div class="thumbnail">
+                                <div class="live">LIVE</div>
+                                <div class="audience">觀眾人數：3萬</div>
+                            </div>
+                            <div class="stream-info">
+                                <div class="stream-name">
+                                    <div class="stream-name-pic"></div>
+                                    VOLORANT
+                                </div>
+                                <div class="stream-title">
+                                    (REBROADCAST)Vivo keyd vs Acend VALORANT Champions:Berlin - Group Stage
+                                </div>
+                                <p class="stream-game">
+                                    VOLORANT ● 英文
+                                </p>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="stream-row">
+                        <div class="stream-col">
+                            <div class="stream-card">
+                                <div class="thumbnail">
+                                    <div class="live">LIVE</div>
+                                    <div class="audience">觀眾人數：3萬</div>
+                                </div>
+                                <div class="stream-info">
+                                    <div class="stream-name">
+                                        <div class="stream-name-pic"></div>
+                                        VGBootCamp
+                                    </div>
+                                    <div class="stream-title">
+                                        CEO 2021 | DAY1 |ft:Kola Glutonny,ESAM,Fatality,WaDi,Sonix, MVD, MuteAce, Myran,
+                                        Aaron & more | !bracket
+                                    </div>
+                                    <p class="stream-game">
+                                        Super Smash Bros. Ultimate ● 英文
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stream-col">
+                            <div class="stream-card">
+                                <div class="thumbnail">
+                                    <div class="live">LIVE</div>
+                                    <div class="audience">觀眾人數：3萬</div>
+                                </div>
+                                <div class="stream-info">
+                                    <div class="stream-name">
+                                        <div class="stream-name-pic"></div>
+                                        VGBootCamp
+                                    </div>
+                                    <div class="stream-title">
+                                        CEO 2021 | DAY1 |ft:Kola Glutonny,ESAM,Fatality,WaDi,Sonix, MVD, MuteAce, Myran,
+                                        Aaron & more | !bracket
+                                    </div>
+                                    <p class="stream-game">
+                                        Super Smash Bros. Ultimate ● 英文
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stream-col">
+                            <div class="stream-card">
+                                <div class="thumbnail">
+                                    <div class="live">LIVE</div>
+                                    <div class="audience">觀眾人數：3萬</div>
+                                </div>
+                                <div class="stream-info">
+                                    <div class="stream-name">
+                                        <div class="stream-name-pic"></div>
+                                        VGBootCamp
+                                    </div>
+                                    <div class="stream-title">
+                                        CEO 2021 | DAY1 |ft:Kola Glutonny,ESAM,Fatality,WaDi,Sonix, MVD, MuteAce, Myran,
+                                        Aaron & more | !bracket
+                                    </div>
+                                    <p class="stream-game">
+                                        Super Smash Bros. Ultimate ● 英文
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stream-col">
+                            <div class="stream-card">
+                                <div class="thumbnail">
+                                    <div class="live">LIVE</div>
+                                    <div class="audience">觀眾人數：3萬</div>
+                                </div>
+                                <div class="stream-info">
+                                    <div class="stream-name">
+                                        <div class="stream-name-pic"></div>
+                                        VGBootCamp
+                                    </div>
+                                    <div class="stream-title">
+                                        CEO 2021 | DAY1 |ft:Kola Glutonny,ESAM,Fatality,WaDi,Sonix, MVD, MuteAce, Myran,
+                                        Aaron & more | !bracket
+                                    </div>
+                                    <p class="stream-game">
+                                        Super Smash Bros. Ultimate ● 英文
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stream-col">
+                            <div class="stream-card">
+                                <div class="thumbnail">
+                                    <div class="live">LIVE</div>
+                                    <div class="audience">觀眾人數：3萬</div>
+                                </div>
+                                <div class="stream-info">
+                                    <div class="stream-name">
+                                        <div class="stream-name-pic"></div>
+                                        VGBootCamp
+                                    </div>
+                                    <div class="stream-title">
+                                        CEO 2021 | DAY1 |ft:Kola Glutonny,ESAM,Fatality,WaDi,Sonix, MVD, MuteAce, Myran,
+                                        Aaron & more | !bracket
+                                    </div>
+                                    <p class="stream-game">
+                                        Super Smash Bros. Ultimate ● 英文
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stream-col">
+                            <div class="stream-card">
+                                <div class="thumbnail">
+                                    <div class="live">LIVE</div>
+                                    <div class="audience">觀眾人數：3萬</div>
+                                </div>
+                                <div class="stream-info">
+                                    <div class="stream-name">
+                                        <div class="stream-name-pic"></div>
+                                        VGBootCamp
+                                    </div>
+                                    <div class="stream-title">
+                                        CEO 2021 | DAY1 |ft:Kola Glutonny,ESAM,Fatality,WaDi,Sonix, MVD, MuteAce, Myran,
+                                        Aaron & more | !bracket
+                                    </div>
+                                    <p class="stream-game">
+                                        Super Smash Bros. Ultimate ● 英文
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stream-col">
+                            <div class="stream-card">
+                                <div class="thumbnail">
+                                    <div class="live">LIVE</div>
+                                    <div class="audience">觀眾人數：3萬</div>
+                                </div>
+                                <div class="stream-info">
+                                    <div class="stream-name">
+                                        <div class="stream-name-pic"></div>
+                                        VGBootCamp
+                                    </div>
+                                    <div class="stream-title">
+                                        CEO 2021 | DAY1 |ft:Kola Glutonny,ESAM,Fatality,WaDi,Sonix, MVD, MuteAce, Myran,
+                                        Aaron & more | !bracket
+                                    </div>
+                                    <p class="stream-game">
+                                        Super Smash Bros. Ultimate ● 英文
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stream-col">
+                            <div class="stream-card">
+                                <div class="thumbnail">
+                                    <div class="live">LIVE</div>
+                                    <div class="audience">觀眾人數：3萬</div>
+                                </div>
+                                <div class="stream-info">
+                                    <div class="stream-name">
+                                        <div class="stream-name-pic"></div>
+                                        VGBootCamp
+                                    </div>
+                                    <div class="stream-title">
+                                        CEO 2021 | DAY1 |ft:Kola Glutonny,ESAM,Fatality,WaDi,Sonix, MVD, MuteAce, Myran,
+                                        Aaron & more | !bracket
+                                    </div>
+                                    <p class="stream-game">
+                                        Super Smash Bros. Ultimate ● 英文
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+</body>
+
+</html>
